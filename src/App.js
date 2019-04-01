@@ -1,19 +1,15 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      todos: ["123", "45"]
-    };
   }
 
   handleSubmit = e => {
     e.preventDefault();
 
-    const todos = this.state.todos;
-    todos.push(e.target.task.value);
-    this.setState({ todos: todos });
+    this.props.dispatch({ type: "ADD_TODO", task: e.target.task.value });
     e.target.reset();
   };
 
@@ -25,7 +21,7 @@ class App extends Component {
           <input type="submit" />
         </form>
         <ul>
-          {this.state.todos.map((todo, index) => (
+          {this.props.todos.map((todo, index) => (
             <li key={index}>{todo}</li>
           ))}
         </ul>
@@ -34,4 +30,7 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  ...state
+});
+export default connect(mapStateToProps)(App);
